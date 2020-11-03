@@ -1,0 +1,152 @@
+
+### Register User 
+POST http://localhost:4000/users/register
+Content-Type: application/json
+
+{
+  "username":"anggalesmana1",
+  "email": "anggalesmana1@gmail.com",
+  "password": "angga",
+  "namadepan":"angga",
+  "namabelakang":"lesmana",
+  "umur":24
+}
+
+###Login User
+POST http://localhost:4000/users/login
+Content-Type: application/json
+
+{
+  "email": "anggalesmana1@gmail.com",
+  "password": "angga"
+}
+
+### GET all User
+GET http://localhost:4000/users
+Content-Type: application/json
+access_token:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZjhiYjlkYjk3ZjdhYzEyZmI0ZWM4N2UiLCJpYXQiOjE2MDI5OTI3MDB9.5bmEd3fJPKKk3wZcPeCSeDbc4UBjLEbAacKqtSdmQck
+
+### GETID
+GET http://localhost:4000/users/5f8a6d3fe055007f138dce80
+Content-Type: application/json
+access_token:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZjhhNjhkNWI4NGE0ZjZlMThhMTk5OGUiLCJpYXQiOjE2MDI5MDYzNzF9.k1pCuHsnfWZ57d2k_NuO_5QTlbSuOby7CxkA5ffIk5g
+
+
+### EDIT USER 
+PUT http://localhost:4000/users/5f8a6d3fe055007f138dce80
+Content-Type: application/json
+access_token:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZjhiYjlkYjk3ZjdhYzEyZmI0ZWM4N2UiLCJpYXQiOjE2MDI5OTI3MDB9.5bmEd3fJPKKk3wZcPeCSeDbc4UBjLEbAacKqtSdmQck
+
+{
+  "username":"anggalesmanaedit1",
+  "email": "anggalesmanaedit1@gmail.com",
+  "password": "anggaedit1",
+  "namadepan":"anggaedit",
+  "namabelakang":"lesmanaedit",
+  "umur":21
+}
+
+###Login User Edit
+POST http://localhost:4000/users/login
+Content-Type: application/json
+
+{
+  "email": "anggalesmanaedit1@gmail.com",
+  "password": "anggaedit1"
+}
+
+
+
+### DELETE USER
+DELETE http://localhost:3000/users/5f8969dc95611a31dc2126ba
+Content-Type: application/json
+access_token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1Zjg5NjlkYzk1NjExYTMxZGMyMTI2YmEiLCJpYXQiOjE2MDI4NDEwNTl9.EUi7zffjDC6lknjJ28sDkhXLoWAytxUE0vdaX3SbpVk
+
+
+### product
+POST http://localhost:4000/kategori
+Content-Type: application/json
+access_token:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZjhhNmQzZmUwNTUwMDdmMTM4ZGNlODAiLCJpYXQiOjE2MDI5OTI4NTR9.Xe4h3CmVRrfG5VW3Pvrn6cDbiN30TrgFcQQP6sNkJKs
+
+{
+  "kategori":"Pakaian Anak Anak"
+}
+
+###masukan kategory kedalam product
+PATCH http://localhost:4000/kategori/5f8a8effb74308d94f2d76e1
+Content-Type: application/json
+access_token:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZjhhNmQzZmUwNTUwMDdmMTM4ZGNlODAiLCJpYXQiOjE2MDI5OTI4NTR9.Xe4h3CmVRrfG5VW3Pvrn6cDbiN30TrgFcQQP6sNkJKs
+
+{
+  "kategori":"mobil mobilan"
+}
+
+#================= ALAMAT ========================
+
+###POST ALAMAT 
+POST http://localhost:4000/alamat
+Content-Type: application/json
+access_token:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZjhhNmQzZmUwNTUwMDdmMTM4ZGNlODAiLCJpYXQiOjE2MDI5OTI4NTR9.Xe4h3CmVRrfG5VW3Pvrn6cDbiN30TrgFcQQP6sNkJKs
+
+{
+      "desa":"suren1",
+      "kecamatan":"plara1",
+      "kabupaten": "sukabumi1",
+      "provinsi":"jabar1",
+      "negara": "idn1",
+      "nohp": "0857214248746",
+      "kodepos":"431364"
+}
+
+###EDIT ALAMAT
+PUT http://localhost:3000/5f8a699eb84a4f6e18a1998f
+Content-Type: application/json
+access_token:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZjhhNjhkNWI4NGE0ZjZlMThhMTk5OGUiLCJpYXQiOjE2MDI5MDYzNzF9.k1pCuHsnfWZ57d2k_NuO_5QTlbSuOby7CxkA5ffIk5g
+
+{
+      "desa":"surenedit",
+      "kecamatan":"plaraedit",
+      "kabupaten": "sukabumiedit",
+      "provinsi":"jabaredit",
+      "negara": "idnedit",
+      "nohp": "085724244746",
+      "kodepos":"43363"
+}
+
+###DELETE ALAMAT
+DELETE http://localhost:3000/alamat/5f8a6579e9cb774f53cf1c67
+Content-Type: application/json
+access_token:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1Zjg5NjlkYzk1NjExYTMxZGMyMTI2YmEiLCJpYXQiOjE2MDI4NDEwNTl9.EUi7zffjDC6lknjJ28sDkhXLoWAytxUE0vdaX3SbpVk
+
+###POST PRODUCT
+POST http://localhost:4000/product
+Content-Type: application/json
+
+{
+      "namabarang":"mobile product",
+      "tumbnail":"ho21t.img",
+      "gambar": "ho21t.img",
+      "deskripsi":"mainan ini bisa jalan dengan remot kontroll",
+      "harga":200000,
+      "jumlah":4,
+      "deskripsisingkat":"mainan anak murah berkualitas"
+}
+
+###PATCH PRODUCT
+POST http://localhost:4000/
+Content-Type: application/json
+access_token: 
+
+{
+  
+  "pilihbarang": "mobil"
+}
+
+###MASUK KERANJANG
+POST http://localhost:4000/keranjang
+Content-Type: application/json
+access_token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZjhhNmQzZmUwNTUwMDdmMTM4ZGNlODAiLCJpYXQiOjE2MDI5NjAwNzJ9.1X_SBUtkiLPhampkV4Z7oI-heT_Apd2SJ09DlsRekZY
+
+{
+  "barangyangdibeli": "mobile"
+}
