@@ -60,7 +60,7 @@ class UserController {
             _id: user._id
           }, 'ANGGALESMANA');
           res.status(200).json({
-            success: true,
+            success: true, data:user.username,
             access_token
           });
         } else throw {
