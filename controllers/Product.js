@@ -28,24 +28,40 @@ class Product {
     .catch(next)
   }
   static get(req, res, next){
-    Productjs.find(req._productId)
+    const { page =1, limit=10 } = req.query;
+    const product = Productjs.find()
+    .limit(limit * 1)
+    .skip((page -1)* limit)
     .then((product)=>{
       res.status(200).json({
-        message:'succes', data:product,
+        message:'succes', total: product.length, product
       })
     })
     .catch(next)
   }
 
-  static get(req, res, next){
-    Productjs.find(req._productId)
-    .then((product)=>{
-      res.status(200).json({
-        message:'succes', data:product,
+  static getId(req, res, next) {
+    Productjs.findOne({
+        _id: req.params.id
       })
-    })
-    .catch(next)
+      .then((products) => {
+        res.status(200).json({
+          success: true,
+          data: products
+        })
+      })
+      .catch(next);
   }
+
+  // static getId(req, res, next){
+  //   Productjs.findById(req._productId)
+  //   .then((product)=>{
+  //     res.status(200).json({
+  //       message:'succes', data:product,
+  //     })
+  //   })
+  //   .catch(next)
+  // }
 
 
   static edit(req, res, next){
