@@ -34,7 +34,7 @@ class Product {
     .skip((page -1)* limit)
     .then((product)=>{
       res.status(200).json({
-        message:'succes', total: product.length, product
+        message:'succes', total: product.length, page:page, product
       })
     })
     .catch(next)
