@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 
 const ProductSchema = new mongoose.Schema({
 
-  namabarang: {
+  name: {
     type: String,
     required: true
   },
@@ -18,7 +18,7 @@ const ProductSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  harga: {
+  price: {
     type: Number,
     required: true
   },

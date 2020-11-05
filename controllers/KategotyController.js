@@ -7,7 +7,7 @@ class KategoryController {
       kategori
     } = req.body;
     const categoryNew = new Kategori({
-      _d: req.params._id,
+      _productId: req.params._id,
       kategori,
     })
     categoryNew.save()

@@ -27,7 +27,8 @@ class Product {
     })
     .catch(next)
   }
-  static get(req, res, next){
+
+  static getPage(req, res, next){
     const { page =1, limit=10 } = req.query;
     const product = Productjs.find()
     .limit(limit * 1)
@@ -53,19 +54,14 @@ class Product {
       .catch(next);
   }
 
-  // static getId(req, res, next){
-  //   Productjs.findById(req._productId)
-  //   .then((product)=>{
-  //     res.status(200).json({
-  //       message:'succes', data:product,
-  //     })
-  //   })
-  //   .catch(next)
-  // }
 
 
-  static edit(req, res, next){
-
+  static getall(req, res, next){
+    Productjs.find()
+    .then((product)=>{
+      res.status(200).json({message:'ok', data:product})
+    })
+    .catch(next)
   }
 
 }
