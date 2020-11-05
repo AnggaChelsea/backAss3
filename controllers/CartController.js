@@ -1,128 +1,126 @@
 const Cart = require('../models/Cart');
-const User = require('../models/User');
+const repository = require('../repository/repository');
 
-class CartController {
-  static listCart(req, res, next) {
-    Cart.find({ _userId: req._id })
-      .then((cart) => {
-        res.status(200).json({ success: true, data: markets });
-      })
-      .catch(next);
-  }
+exports.addItemToCart = async (req, res, next) =>{
+  const { productId } = req.body;
+  const quantity = Number.parseInt(req.body.quantity);
+  try {
+            let cart = await cartRepository.cart();
+            let productDetails = await productRepository.productById(productId);
+                 if (!productDetails) {
+                return res.status(500).json({
+                    type: "Not Found",
+                    msg: "Invalid request"
+                })
+            }
+            //--If Cart Exists ----
+            if (cart) {
+                //---- check if index exists ----
+                const indexFound = cart.items.findIndex(item => item.productId.id == productId);
+                //------this removes an item from the the cart if the quantity is set to zero,We can use this method to remove an item from the list  -------
+                if (indexFound !== -1 && quantity <= 0) {
+                    cart.items.splice(indexFound, 1);
+                    if (cart.items.length == 0) {
+                        cart.subTotal = 0;
+                    } else {
+                        cart.subTotal = cart.items.map(item => item.total).reduce((acc, next) => acc + next);
+                    }
+                }
+                //----------check if product exist,just add the previous quantity with the new quantity and update the total price-------
+                else if (indexFound !== -1) {
+                    cart.items[indexFound].quantity = cart.items[indexFound].quantity + quantity;
+                    cart.items[indexFound].total = cart.items[indexFound].quantity * productDetails.price;
+                    cart.items[indexFound].price = productDetails.price
+                    cart.subTotal = cart.items.map(item => item.total).reduce((acc, next) => acc + next);
+                }
+                //----Check if Quantity is Greater than 0 then add item to items Array ----
+                else if (quantity > 0) {
+                    cart.items.push({
+                        productId: productId,
+                        quantity: quantity,
+                        price: productDetails.price,
+                        total: parseInt(productDetails.price * quantity)
+                    })
+                    cart.subTotal = cart.items.map(item => item.total).reduce((acc, next) => acc + next);
+                }
+                //----if quantity of price is 0 throw the error -------
+                else {
+                    return res.status(400).json({
+                        type: "Invalid",
+                        msg: "Invalid request"
+                    })
+                }
+                let data = await cart.save();
+                res.status(200).json({
+                    type: "success",
+                    mgs: "Process Successful",
+                    data: data
+                })
+            }
+            //------------ if there is no user with a cart...it creates a new cart and then adds the item to the cart that has been created------------
+            else {
+                const cartData = {
+                    items: [{
+                        productId: productId,
+                        quantity: quantity,
+                        total: parseInt(productDetails.price * quantity),
+                        price: productDetails.price
+                    }],
+                    subTotal: parseInt(productDetails.price * quantity)
+                }
+                cart = await cartRepository.addItem(cartData)
+                let data = await cart.save();
+                res.json(cart);
+            }
+        } catch (err) {
+            console.log(err)
+            res.status(400).json({
+                type: "Invalid",
+                msg: "Something Went Wrong",
+                err: err
+            })
+        }
+    }
+    exports.getCart = async (req, res) => {
+        try {
+            let cart = await cartRepository.cart()
+            if (!cart) {
+                return res.status(400).json({
+                    type: "Invalid",
+                    msg: "Cart Not Found",
+                })
+            }
+            res.status(200).json({
+                status: true,
+                data: cart
+            })
+        } catch (err) {
+            console.log(err)
+            res.status(400).json({
+                type: "Invalid",
+                msg: "Something Went Wrong",
+                err: err
+            })
+        }
+    }
 
-  // static post(req, res, next) {
-  //   User.findById({_productId: req._id})
-  //
-  //     .then((product) => {
-  //       if (product) {
-  //         if (product.products.totalPrice += qty  && product.resources.foods >= 10) {
-  //           const resources = user.resources;
-  //           resources.golds -= 30;
-  //           resources.foods -= 10;
-  //           return User.updateOne({ _id: req._id }, { resources: resources });
-  //         } else {
-  //           throw ({name:'NOT_ENOUGH'});
-  //         }
-  //       } else {
-  //         throw ({name:'NOT_FOUND'});
-  //       }
-  //     })
-  //     .then((_) => {
-  //       const { name } = req.body;
-  //       const market = new Cart({ _userId: req._id, name });
-  //       return market.save();
-  //     })
-  //     .then((market) => {
-  //       res.status(200).json({ success: true, data: market });
-  //     })
-  //     .catch(next);
-  // }
-  //
-  // // Get Cart, belum memperlihatkan jumlah golds yang digenerate!
-  // static get(req, res, next) {
-  //   const { id } = req.params;
-  //   Cart.findById(id)
-  //     .then((market) => {
-  //       if (market) {
-  //         const golds = Math.floor((Date.now() - market.lastCollected) / 60000);
-  //         res.status(200).json({
-  //           success: true,
-  //           data: market,
-  //           golds: golds > 50 ? 50 : golds,
-  //         });
-  //       } else {
-  //         throw 'NOT_FOUND';
-  //       }
-  //     })
-  //     .catch(next);
-  // }
-  //
-  // static put(req, res, next) {
-  //   const { id } = req.params;
-  //   const { name } = req.body;
-  //   Cart.findById(id)
-  //     .then((market) => {
-  //       if (market) {
-  //         market.name = name;
-  //         return market.save();
-  //       } else {
-  //         throw 'NOT_FOUND';
-  //       }
-  //     })
-  //     .then((market) => {
-  //       res.status(200).json({ succes: true, data: market });
-  //     })
-  //     .catch(next);
-  // }
-  //
-  // static delete(req, res, next) {
-  //   const { id } = req.params;
-  //   Cart.findById(id)
-  //     .then((market) => {
-  //       if (market) {
-  //         return market.remove();
-  //       } else {
-  //         throw 'NOT_FOUND';
-  //       }
-  //     })
-  //     .then((market) => {
-  //       res
-  //         .status(200)
-  //         .json({ succes: true, message: 'Cart deleted', data: market });
-  //     })
-  //     .catch(next);
-  // }
-  //
-  // static collect(req, res, next) {
-  //   const { id } = req.params;
-  //   let golds;
-  //   Cart.findById(id)
-  //     .then((market) => {
-  //       if (market) {
-  //         golds = Math.floor((Date.now() - market.lastCollected) / 60000);
-  //         golds = golds > 50 ? 50 : golds; //
-  //         market.lastCollected = Date.now();
-  //         return market.save();
-  //       } else {
-  //         throw 'NOT_FOUND';
-  //       }
-  //     })
-  //     .then((market) => {
-  //       return User.findById(req._id);
-  //     })
-  //     .then((user) => {
-  //       const resources = user.resources;
-  //       resources.golds += golds;
-  //       return User.updateOne({ _id: req._id }, { resources: resources });
-  //     })
-  //     .then((result) => {
-  //       res.status(200).json({
-  //         success: true,
-  //         message: `${golds} golds has been added to your resources`,
-  //       });
-  //     })
-  //     .catch(next);
-  // }
+    exports.emptyCart = async (req, res) => {
+        try {
+            let cart = await cartRepository.cart();
+            cart.items = [];
+            cart.subTotal = 0
+            let data = await cart.save();
+            res.status(200).json({
+                type: "success",
+                mgs: "Cart Has been emptied",
+                data: data
+            })
+        } catch (err) {
+            console.log(err)
+            res.status(400).json({
+                type: "Invalid",
+                msg: "Something Went Wrong",
+                err: err
+            })
+        }
 }
-
-module.exports = CartController;
