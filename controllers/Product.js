@@ -4,20 +4,20 @@ const Kategory = require('../models/Kategory')
 class Product {
   static post(req, res, next) {
     const {
-      namabarang,
+      name,
       tumbnail,
       gambar,
       deskripsi,
-      harga,
+      price,
       jumlah,
       deskripsisingkat
     } = req.body;
     const product = new Productjs({
-      namabarang,
+      name,
       tumbnail,
       gambar,
       deskripsi,
-      harga,
+      price,
       jumlah,
       deskripsisingkat
     })

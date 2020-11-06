@@ -1,23 +1,24 @@
-const Cart = require('../models/Cart');
-const repository = require('../repository/repository');
-
-exports.addItemToCart = async (req, res, next) =>{
-  const { productId } = req.body;
-  const quantity = Number.parseInt(req.body.quantity);
-  try {
+const cartRepository = require('../repository/repository')
+    const productRepository = require('../models/Cart');
+    const Product = require('../models/Product')
+    exports.addItemToCart = async (req, res) => {
+        const {
+            quantity
+        } = req.body;
+        try {
             let cart = await cartRepository.cart();
-            let productDetails = await productRepository.productById(productId);
+            let productDetails = Product.findOne({productId: req._id});
                  if (!productDetails) {
                 return res.status(500).json({
                     type: "Not Found",
                     msg: "Invalid request"
                 })
             }
-            //--If Cart Exists ----
+            //--If cart exists ----
             if (cart) {
-                //---- check if index exists ----
+                //---- Check if index exists ----
                 const indexFound = cart.items.findIndex(item => item.productId.id == productId);
-                //------this removes an item from the the cart if the quantity is set to zero,We can use this method to remove an item from the list  -------
+                //------This removes an item from the the cart if the quantity is set to zero, We can use this method to remove an item from the list  -------
                 if (indexFound !== -1 && quantity <= 0) {
                     cart.items.splice(indexFound, 1);
                     if (cart.items.length == 0) {
@@ -26,14 +27,14 @@ exports.addItemToCart = async (req, res, next) =>{
                         cart.subTotal = cart.items.map(item => item.total).reduce((acc, next) => acc + next);
                     }
                 }
-                //----------check if product exist,just add the previous quantity with the new quantity and update the total price-------
+                //----------Check if product exist, just add the previous quantity with the new quantity and update the total price-------
                 else if (indexFound !== -1) {
                     cart.items[indexFound].quantity = cart.items[indexFound].quantity + quantity;
                     cart.items[indexFound].total = cart.items[indexFound].quantity * productDetails.price;
                     cart.items[indexFound].price = productDetails.price
                     cart.subTotal = cart.items.map(item => item.total).reduce((acc, next) => acc + next);
                 }
-                //----Check if Quantity is Greater than 0 then add item to items Array ----
+                //----Check if quantity is greater than 0 then add item to items array ----
                 else if (quantity > 0) {
                     cart.items.push({
                         productId: productId,
@@ -43,7 +44,7 @@ exports.addItemToCart = async (req, res, next) =>{
                     })
                     cart.subTotal = cart.items.map(item => item.total).reduce((acc, next) => acc + next);
                 }
-                //----if quantity of price is 0 throw the error -------
+                //----If quantity of price is 0 throw the error -------
                 else {
                     return res.status(400).json({
                         type: "Invalid",
@@ -57,7 +58,7 @@ exports.addItemToCart = async (req, res, next) =>{
                     data: data
                 })
             }
-            //------------ if there is no user with a cart...it creates a new cart and then adds the item to the cart that has been created------------
+            //------------ This creates a new cart and then adds the item to the cart that has been created------------
             else {
                 const cartData = {
                     items: [{
@@ -87,7 +88,7 @@ exports.addItemToCart = async (req, res, next) =>{
             if (!cart) {
                 return res.status(400).json({
                     type: "Invalid",
-                    msg: "Cart Not Found",
+                    msg: "Cart not found",
                 })
             }
             res.status(200).json({
@@ -98,12 +99,11 @@ exports.addItemToCart = async (req, res, next) =>{
             console.log(err)
             res.status(400).json({
                 type: "Invalid",
-                msg: "Something Went Wrong",
+                msg: "Something went wrong",
                 err: err
             })
         }
     }
-
     exports.emptyCart = async (req, res) => {
         try {
             let cart = await cartRepository.cart();
@@ -111,16 +111,16 @@ exports.addItemToCart = async (req, res, next) =>{
             cart.subTotal = 0
             let data = await cart.save();
             res.status(200).json({
-                type: "success",
-                mgs: "Cart Has been emptied",
+                type: "Success",
+                mgs: "Cart has been emptied",
                 data: data
             })
         } catch (err) {
             console.log(err)
             res.status(400).json({
                 type: "Invalid",
-                msg: "Something Went Wrong",
+                msg: "Something went wrong",
                 err: err
             })
         }
-}
+    }
