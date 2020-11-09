@@ -4,14 +4,14 @@ const Category = require('../models/Categoryfake');
 
 class Productfakeclass{
 static postget(req, res, next) {
-  const categories = ["Baby", "Movies", "Shoes", "Books", "Electronics","Computers", "Kids"];
+  const categories = ["pizza", "sosis", "Meatball", "noodles", "chocholate","Egg food", "Nasigorenf"];
   for (let i = 0; i < 50; i++) {
       let product = new Productfake({
           name : faker.commerce.productName(),
           price : faker.commerce.price(),
           category: categories[Math.floor(Math.random() * categories.length)],
           description : faker.lorem.paragraph(),
-          image: "https://images-na.ssl-images-amazon.com/images/I/4196ru-rkjL.jpg"
+          image: faker.image.food()
       });
 
       product.save();

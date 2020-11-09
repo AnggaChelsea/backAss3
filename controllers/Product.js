@@ -45,7 +45,7 @@ class Product {
     Productjs.findOne({
         _id: req.params.id
       })
-      .then((products) => {
+      .then((product) => {
         res.status(200).json({
           success: true,
           data: products
