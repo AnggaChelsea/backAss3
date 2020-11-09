@@ -5,7 +5,7 @@ class CommentController{
   static post(req,res,next){
     const {comments} = req.body;
     const userComment = new Comment({
-      _userId: req.params.id,
+      _userId: req._userId,
       comments
     });
     userComment.save()
