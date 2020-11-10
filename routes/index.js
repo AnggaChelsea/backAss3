@@ -16,7 +16,6 @@ router.use('/product', Product);
 router.use('/kategori', Kategori);
 router.use('/users', userRoutes);
 router.use('/fake', productfake);
-// router.use('/cart', cart);
 router.use('/comment', authentication, Comment)
 router.use('/cart', cartRoutes);
 router.use('/alamat', alamtrouter);

@@ -1,23 +1,16 @@
 const mongoose = require('mongoose');
+mongoose.set('useCreateIndex', true);
+const Schema = mongoose.Schema;
 
-const cartSchema = new mongoose.Schema({
-  user: [{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
-    required:true,
-  }],
-  items: [
-    {
-      product: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Product',
-        required:true
-      }],
-      quantity:Number,
-      total:Number,
-    }
-  ]
-}, {timestamps: {created: 'create cart'}}
-);
+const cartSchema = new Schema({
+    ProductIds: [{
+        ProductId: Schema.Types.ObjectId,
+        Quantity: Number
+    }],
+    createdAt: {type: Date, default: Date.now},
+    updatedAt: {type: Date, default: Date.now}
+});
 
-module.exports = mongoose.model('Cart', cartSchema);
+const Cart = mongoose.model('Cart', cartSchema);
+
+module.exports = Cart;
