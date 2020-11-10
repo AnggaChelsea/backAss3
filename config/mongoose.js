@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+var http = require ('http');
 
 module.exports = () => {
 
@@ -13,7 +14,24 @@ module.exports = () => {
 //   db.on('error', (e) => console.log(e));
 //   db.once('open', () => console.log('Mongoose connection success!'));
 
-mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/Assigment3');
+
+
+    // Here we find an appropriate database to connect to, defaulting to
+    // localhost if we don't find one.
+    var uristring =
+    process.env.MONGOLAB_URI ||
+    process.env.MONGOHQ_URL ||
+    'mongodb://localhost/Assigment3';
+
+    // The http server will listen to an appropriate port, or default to
+    // port 5000.
+    mongoose.connect(uristring, function (err, res) {
+      if (err) {
+      console.log ('ERROR connecting to: ' + uristring + '. ' + err);
+      } else {
+      console.log ('Succeeded connected to: ' + uristring);
+      }
+    });
 
 
 };
