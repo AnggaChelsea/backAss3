@@ -6,7 +6,7 @@ const cors = require('cors');
 const morgan = require('morgan');
 
 const app = express();
-const port = 5000;
+const port = process.env.PORT || 5000;
 
 mongooseConnect();
 app.use(morgan('dev'));
