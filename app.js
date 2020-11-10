@@ -26,7 +26,7 @@ app.use(routes);
 app.use(cors());
 
 app.get('/', (req, res)=>{
-  res.send('alhamdulillah sok mangga di ango');
+  res.send('alhamdulillah sok mangga di ango we');
 })
 
 app.listen(port, () => {
