@@ -24,6 +24,10 @@ app.use(express.json());
 app.use(routes);
 app.use(cors());
 
+app.get('/', (req, res)=>{
+  res.send('alhamdulillah sok mangga di ango');
+})
+
 app.listen(port, () => {
   console.log(`App runs on http://localhost:${port}`);
 });
